@@ -103,6 +103,9 @@ class ShuZhiJiFen:
 
     def zi_shi_ying_ji_fen(self, epsilon=None):
         """
+        >>> import math
+        >>> f = lambda x: math.exp(-x**2 / 2) / math.sqrt(2*math.pi)
+        >>> jifen = ShuZhiJiFen(-1, 1, f)
 
         :param epsilon: maximum expected error
         :return:
@@ -113,7 +116,6 @@ class ShuZhiJiFen:
         def simpson(start: float, end: float, func: Callable[[float], float]) -> float:
             return (end-start) / 6 * (func(start) + 4 * func((start+end)/2) + func(end))
 
-
         a = self.a
         b = self.b
         f = self.f
@@ -122,7 +124,8 @@ class ShuZhiJiFen:
 
             S1 = simpson(a, b, f)
             S2 = simpson(a, (b+a)/2, f) + simpson((b+a)/2, b, f)
-            if (S1 - S2) <= epsi:
+
+            if abs(S1 - S2) <= epsi:
                 return S2 + (S2 - S1) / 15
             else:
                 return calc_split(a, (a+b)/2, f, epsi/2) + calc_split((a+b)/2, b, f, epsi/2)
@@ -243,6 +246,8 @@ class ErWeiShuZhiJiFen:
 
 
 if __name__ == "__main__":
+
+
     def real_f(x):
         if x == 0:
             return 0
